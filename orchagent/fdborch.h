@@ -24,6 +24,12 @@ struct FdbUpdate
     bool add;
 };
 
+struct FdbFlushUpdate
+{
+    vector<FdbEntry> entries;
+    Port port;
+};
+
 struct SavedFdbEntry
 {
     FdbEntry entry;
@@ -47,6 +53,9 @@ public:
     void update(sai_fdb_event_t, const sai_fdb_entry_t *, sai_object_id_t);
     void update(SubjectType type, void *cntx);
     bool getPort(const MacAddress&, uint16_t, Port&);
+    void flushFDBEntries(sai_object_id_t bridge_port_oid,
+                         sai_object_id_t vlan_oid);
+    void notifyObserversFDBFlush(Port &p, sai_object_id_t&);
 
 private:
     PortsOrch *m_portsOrch;
@@ -64,9 +73,6 @@ private:
     void updatePortOperState(const PortOperStateUpdate&);
     bool addFdbEntry(const FdbEntry&, const string&);
     bool removeFdbEntry(const FdbEntry&);
-    void flushFDBEntries(sai_object_id_t bridge_port_oid,
-                         sai_object_id_t vlan_oid);
-
     bool storeFdbEntryState(const FdbUpdate& update);
 };
 

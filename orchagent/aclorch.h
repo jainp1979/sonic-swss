@@ -430,6 +430,11 @@ public:
     map<acl_table_type_t, bool> m_mirrorTableCapabilities;
 
     static sai_acl_action_type_t getAclActionFromAclEntry(sai_acl_entry_attr_t attr);
+    
+    // Get the OID for the ACL bind point for a given port
+    static bool getAclBindPortId(Port& port, sai_object_id_t& port_id);
+
+    using Orch::doTask;  // Allow access to the basic doTask
 
 private:
     SwitchOrch *m_switchOrch;
